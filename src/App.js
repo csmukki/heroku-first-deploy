@@ -1,9 +1,7 @@
 import React from "react";
 
-export default function App() {
-  return (
-    <div>
-      <h1>Hello React, First deploy to Heroku!</h1>
-    </div>
-  );
+function App() {
+  return <h1>Hello World!</h1>;
 }
+
+export default App;
