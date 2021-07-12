@@ -2,22 +2,19 @@ import React from "react";
 import Homepage from "./homepage";
 
 import { connect } from "react-redux";
+import { selectCurrentUserName } from "./redux/user/user.selectors";
 
-function App({ currentUser }) {
+function App({ username }) {
   return (
     <div>
-      {Object.keys(currentUser).length ? (
-        <h2>Welcome {currentUser.username}</h2>
-      ) : (
-        <h2>Need to login First...</h2>
-      )}
+      {username ? <h2>Welcome {username}</h2> : <h2>Need to login First...</h2>}
       <Homepage />
     </div>
   );
 }
 
 const mapStateToProps = (state) => ({
-  currentUser: state.user.currentUser,
+  username: selectCurrentUserName(state),
 });
 
 export default connect(mapStateToProps)(App);

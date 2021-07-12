@@ -22,7 +22,7 @@ class Homepage extends React.Component {
     handleSubmit = event => {
         event.preventDefault();
         const {username, password} = this.state;
-        setCurrentUser({username, password})
+        this.props.setCurrentUser({username, password})
         this.setState({username: "", password: ""});
     };
 
