@@ -1,20 +1,27 @@
 import React from "react";
-import Homepage from "./homepage";
 
-import { connect } from "react-redux";
-import { selectCurrentUserName } from "./redux/user/user.selectors";
+import { AppContainer } from "./App.styles";
 
-function App({ username }) {
-  return (
-    <div>
-      {username ? <h2>Welcome {username}</h2> : <h2>Need to login First...</h2>}
-      <Homepage />
-    </div>
-  );
+import { Route, Switch, Redirect } from "react-router-dom";
+import Homepage from "./pages/homepage/homepage.component";
+import Header from "./components/header/header.component";
+import ShopPage from "./pages/shop-page/shop-page.component";
+import PageNotFound from "./components/page-not-found/page-not-found.component";
+
+class App extends React.Component {
+  render() {
+    return (
+      <AppContainer>
+        <Header />
+        <Switch>
+          <Route exact path="/" component={Homepage} />
+          <Route path="/shop" component={ShopPage} />
+          <Route exact path="/page-not-found" component={PageNotFound} />
+          <Redirect to="/page-not-found" />
+        </Switch>
+      </AppContainer>
+    );
+  }
 }
 
-const mapStateToProps = (state) => ({
-  username: selectCurrentUserName(state),
-});
-
-export default connect(mapStateToProps)(App);
+export default App;
