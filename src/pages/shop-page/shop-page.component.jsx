@@ -1,24 +1,37 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { selectCollectionsForPreview } from '../../redux/shop/shop.selectors';
+
+import { firestore, collectionsForReducer } from '../../firebase/firebase.utils';
+import { updateCollections } from '../../redux/shop/shop.actions';
 import { ShopPageContainer } from './shop-page.styles';
-import CollectionPreview from '../../components/collection-preview/collection-preview.component';
+import CollectionOverview from '../../components/collection-overview/collection-overview.component';
 
 
-const ShopPage = ({collections}) => (
-    <ShopPageContainer>
-        {
-            collections.map(({id, ...otherProps}) => (
-                <CollectionPreview key={id} {...otherProps}/>
-            ))
-        }
-    </ShopPageContainer>
-);
+class ShopPage extends React.Component {
 
-const mapStateToProps = state => ({
-    collections: selectCollectionsForPreview(state)
+    componentDidMount() {
+        const {updateCollections} = this.props;
+        const collectionRef = firestore.collection('collections');
+        collectionRef.onSnapshot(snapshot => {
+            const convertedCollections = collectionsForReducer(snapshot);
+            updateCollections(convertedCollections)
+        });
+    }
+
+    render() {
+        return (
+            <ShopPageContainer>
+                <CollectionOverview />
+            </ShopPageContainer>
+        );
+    }
+}
+
+
+const mapDispatchToProps = dispatch => ({
+    updateCollections: collections => dispatch(updateCollections(collections))
 });
 
 
-export default connect(mapStateToProps)(ShopPage);
+export default connect(null, mapDispatchToProps)(ShopPage);

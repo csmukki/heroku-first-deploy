@@ -22,11 +22,11 @@ export const addCollectionAndDocument = (collectionKey, data) => {
   const batch = firestore.batch();
 
   // data is in array form:
-  data.forEach(({ title, imageUrl }) => {
+  data.forEach(({ title, items }) => {
     const newDocRef = collectionRef.doc();
     batch.set(newDocRef, {
       title,
-      imageUrl,
+      items,
     });
   });
   batch.commit();
@@ -37,7 +37,7 @@ export const addCollectionAndDocument = (collectionKey, data) => {
 export const sectionsForReducer = (snapshot) => {
   if (!snapshot) return;
 
-  const transformed = snapshot.docs.map((doc) => {
+  const transformedSections = snapshot.docs.map((doc) => {
     const { title, imageUrl } = doc.data();
     return {
       id: doc.id,
@@ -47,5 +47,24 @@ export const sectionsForReducer = (snapshot) => {
     };
   });
 
-  return transformed;
+  return transformedSections;
+};
+
+export const collectionsForReducer = (snapshot) => {
+  if (!snapshot) return;
+
+  const transformedCollections = snapshot.docs.map((doc) => {
+    const { title, items } = doc.data();
+    return {
+      id: doc.id,
+      routePath: encodeURI(title.toLowerCase()),
+      title,
+      items,
+    };
+  });
+
+  return transformedCollections.reduce((Accumulator, collection) => {
+    Accumulator[collection.title.toLowerCase()] = collection;
+    return Accumulator;
+  }, {});
 };

@@ -10,8 +10,10 @@ export const selectCollections = createSelector(
 export const selectCollectionsForPreview = createSelector(
   [selectCollections],
   (collections) =>
-    Object.keys(collections).reduce((Accumulator, key) => {
-      Accumulator.push(collections[key]);
-      return Accumulator;
-    }, [])
+    collections
+      ? Object.keys(collections).reduce((Accumulator, key) => {
+          Accumulator.push(collections[key]);
+          return Accumulator;
+        }, [])
+      : []
 );
