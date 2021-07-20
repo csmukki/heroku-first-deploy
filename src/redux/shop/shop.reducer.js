@@ -2,6 +2,7 @@ import { shopActionTypes } from "./shop.types";
 
 const INITIAL_STATE = {
   collections: null,
+  loading: true,
 };
 
 export const shopReducer = (state = INITIAL_STATE, action) => {
@@ -10,6 +11,11 @@ export const shopReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         collections: action.payload,
+      };
+    case shopActionTypes.TOGGLE_SPINNER:
+      return {
+        ...state,
+        loading: !state.loading,
       };
     default:
       return state;

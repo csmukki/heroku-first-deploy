@@ -1,7 +1,8 @@
 import { directoryActionTypes } from "./directory.types";
 
 const INITIAL_STATE = {
-  sections: [],
+  sections: null,
+  loading: true,
 };
 
 export const directoryReducer = (state = INITIAL_STATE, action) => {
@@ -10,6 +11,11 @@ export const directoryReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         sections: action.payload,
+      };
+    case directoryActionTypes.TOGGLE_SPINNER:
+      return {
+        ...state,
+        loading: !state.loading,
       };
     default:
       return state;

@@ -4,5 +4,10 @@ const selectDirectory = (state) => state.directory;
 
 export const selectSections = createSelector(
   [selectDirectory],
-  (directory) => directory.sections
+  ({ sections }) => (sections ? sections : [])
+);
+
+export const selectLoading = createSelector(
+  [selectDirectory],
+  (directory) => directory.loading
 );
